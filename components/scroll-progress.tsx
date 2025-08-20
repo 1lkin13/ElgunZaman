@@ -33,7 +33,7 @@ export function ScrollProgress() {
   return (
     <motion.div
       className="fixed top-0 left-0 right-0 z-50 h-1 bg-primary/20"
-      initial={{ scaleX: 0 }}
+      initial={false}
       animate={{ scaleX: 1 }}
       transition={{ duration: 0.3 }}
     >

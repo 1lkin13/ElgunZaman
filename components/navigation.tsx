@@ -84,7 +84,7 @@ export function Navigation() {
 
   return (
     <motion.nav
-      initial={{ opacity: 0, y: -20 }}
+      initial={false}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -134,21 +134,11 @@ export function Navigation() {
                 )}
               </motion.button>
             ))}
-            <div
-              className={`${isScrolled ? "glass border border-white/20 rounded-full p-1" : "bg-white/10 border border-white/30 rounded-full p-1"}`}
-            >
-              <LanguageSwitcher />
-            </div>
+            <LanguageSwitcher isScrolled={isScrolled} />
           </div>
 
-          {/* Mobile Menu Button and Language Switcher */}
-          <div className="md:hidden flex items-center gap-3">
-            <div
-              className={`${isScrolled ? "glass border border-white/20 rounded-full p-1" : "bg-white/10 border border-white/30 rounded-full p-1"}`}
-            >
-              <LanguageSwitcher />
-            </div>
-
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
             <motion.button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`p-3 rounded-full transition-all duration-300 mobile-menu ${
@@ -202,6 +192,11 @@ export function Navigation() {
                 {item.label}
               </motion.button>
             ))}
+
+            {/* Mobile Language Switcher inside menu */}
+            <div className="px-6 pt-2">
+              <LanguageSwitcher isScrolled={isMobileMenuOpen ? true : isScrolled} />
+            </div>
           </div>
         </motion.div>
       </div>

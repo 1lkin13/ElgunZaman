@@ -153,13 +153,13 @@ export function TestimonialsSection() {
             ))}
           </div>
 
-          {/* Auto-play Indicator */}
+          {/* Auto-play Indicator
           <div className="flex justify-center mt-4">
             <div className="flex items-center space-x-2 text-muted-foreground text-sm">
               <div className={`w-2 h-2 rounded-full ${isAutoPlaying ? "bg-green-500" : "bg-gray-400"}`} />
               <span>{isAutoPlaying ? "Auto-playing" : "Paused"}</span>
             </div>
-          </div>
+          </div> */}
         </motion.div>
 
         {/* Statistics or Additional Info */}

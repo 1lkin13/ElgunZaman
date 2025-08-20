@@ -7,7 +7,9 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight, X, ExternalLink } from "lucide-react"
 
-const galleryImages = [
+type CategoryKey = keyof typeof galleryCategories["en"]
+
+const galleryImages: Array<{ id: number; src: string; alt: string; category: CategoryKey }> = [
   {
     id: 1,
     src: "/romantic-wedding-couple.png",
@@ -59,13 +61,16 @@ const galleryImages = [
 ]
 
 export function GallerySection() {
-  const { t, language } = useLanguage()
+  const { t, currentLanguage } = useLanguage()
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [activeCategory, setActiveCategory] = useState<string>("all")
+  const [activeCategory, setActiveCategory] = useState<CategoryKey>("all")
 
-  const categoryKeys = ["all", ...Array.from(new Set(galleryImages.map((img) => img.category)))]
-  const categories = galleryCategories[language] || galleryCategories.en
+  const categoryKeys: CategoryKey[] = [
+    "all",
+    ...Array.from(new Set(galleryImages.map((img) => img.category))),
+  ]
+  const categories = galleryCategories[currentLanguage] || galleryCategories.en
 
   const filteredImages =
     activeCategory === "all" ? galleryImages : galleryImages.filter((img) => img.category === activeCategory)
@@ -147,13 +152,13 @@ export function GallerySection() {
             {/* Carousel Controls */}
             <button
               onClick={prevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-2 rounded-full transition-all duration-200"
+              className="absolute left-4 top-1/2 -translate-y-1/2 border border-blue-500/40 bg-blue-600/30 hover:bg-blue-600/40 text-blue-100 p-2 rounded-full transition-all duration-200"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-2 rounded-full transition-all duration-200"
+              className="absolute right-4 top-1/2 -translate-y-1/2 border border-blue-500/40 bg-blue-600/30 hover:bg-blue-600/40 text-blue-100 p-2 rounded-full transition-all duration-200"
             >
               <ChevronRight className="h-6 w-6" />
             </button>
@@ -263,19 +268,19 @@ export function GallerySection() {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="relative max-w-4xl max-h-[90vh] w-full"
+              className="relative w-full max-w-4xl h-[70vh]"
               onClick={(e) => e.stopPropagation()}
             >
               <img
                 src={selectedImageData.src || "/placeholder.svg"}
                 alt={selectedImageData.alt}
-                className="w-full h-full object-contain rounded-lg"
+                className="absolute inset-0 w-full h-full object-contain rounded-lg"
               />
 
               {/* Close Button */}
               <button
                 onClick={closeLightbox}
-                className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-2 rounded-full transition-all duration-200"
+                className="absolute top-4 right-4 border border-blue-500/40 bg-blue-600/30 hover:bg-blue-600/40 text-blue-100 p-2 rounded-full transition-all duration-200"
               >
                 <X className="h-6 w-6" />
               </button>
@@ -283,21 +288,21 @@ export function GallerySection() {
               {/* Navigation Buttons */}
               <button
                 onClick={prevImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 rounded-full transition-all duration-200"
+                className="absolute left-4 top-1/2 -translate-y-1/2 border border-blue-500/40 bg-blue-600/30 hover:bg-blue-600/40 text-blue-100 p-3 rounded-full transition-all duration-200"
               >
                 <ChevronLeft className="h-6 w-6" />
               </button>
               <button
                 onClick={nextImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white p-3 rounded-full transition-all duration-200"
+                className="absolute right-4 top-1/2 -translate-y-1/2 border border-blue-500/40 bg-blue-600/30 hover:bg-blue-600/40 text-blue-100 p-3 rounded-full transition-all duration-200"
               >
                 <ChevronRight className="h-6 w-6" />
               </button>
 
               {/* Image Info */}
-              <div className="absolute bottom-4 left-4 right-4 bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                <h3 className="text-white font-medium text-lg">{selectedImageData.alt}</h3>
-                <p className="text-white/70 text-sm">{categories[selectedImageData.category]}</p>
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-sm rounded-lg border border-blue-500/30 px-4 py-3 w-[88%] max-w-md text-center">
+                <h3 className="text-blue-400 font-medium text-base">{selectedImageData.alt}</h3>
+                <p className="text-blue-300 text-xs mt-1">{categories[selectedImageData.category]}</p>
               </div>
             </motion.div>
           </motion.div>

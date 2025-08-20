@@ -26,7 +26,7 @@ export function HeroSection() {
         <div
           className="w-full h-[120%] bg-cover bg-center bg-no-repeat parallax-bg"
           style={{
-            backgroundImage: "url('/placeholder-b1k5v.png')",
+            backgroundImage: "url('/background2.jpg')",
             transform: "translate3d(0, 0, 0)", // Force hardware acceleration
           }}
         />
