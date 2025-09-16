@@ -3,28 +3,46 @@
 import { useLanguage } from "@/hooks/use-language"
 import { motion } from "framer-motion"
 import { Camera, Award, Users, Calendar } from "lucide-react"
-
+import elgunZaman from "@/public/elgun.jpg"
+import { AnimatedCounter } from "./animated-counter"
+import BlurText from "./BlurText"
 const timelineIcons = [Camera, Users, Award, Award, Calendar, Award]
 
 export function AboutSection() {
   const { t } = useLanguage()
 
   return (
-    <section className="py-20 px-6 bg-background">
+    <section className="py-20 px-6">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-foreground mb-4">
-            {t.about.title}
-          </h2>
-          <p className="font-sans text-lg text-muted-foreground max-w-2xl mx-auto">{t.about.subtitle}</p>
-        </motion.div>
+        <div className="text-center mb-16">
+          <BlurText
+            text={t.about.title}
+            delay={150}
+            animateBy="words"
+            direction="top"
+            className="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-white mb-4"
+            animationFrom={{ filter: 'blur(12px)', opacity: 0, y: -60 }}
+            animationTo={[
+              { filter: 'blur(6px)', opacity: 0.6, y: -20 },
+              { filter: 'blur(0px)', opacity: 1, y: 0 }
+            ]}
+            stepDuration={0.3}
+          />
+          <BlurText
+            text={t.about.subtitle}
+            delay={100}
+            animateBy="words"
+            direction="bottom"
+            className="font-sans text-lg text-white/70 max-w-2xl mx-auto"
+            animationFrom={{ filter: 'blur(10px)', opacity: 0, y: 40 }}
+            animationTo={[
+              { filter: 'blur(5px)', opacity: 0.5, y: 10 },
+              { filter: 'blur(0px)', opacity: 1, y: 0 }
+            ]}
+            stepDuration={0.25}
+          />
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left Column - Bio and Info */}
@@ -36,10 +54,10 @@ export function AboutSection() {
             className="space-y-8"
           >
             {/* Profile Image */}
-            <div className="relative">
-              <div className="aspect-[3/4] max-w-sm mx-auto lg:mx-0 rounded-2xl overflow-hidden bg-muted">
+            <div className="relative ">
+              <div className="aspect-[3/4] max-w-md mx-auto lg:mx-0 rounded-2xl overflow-hidden bg-muted">
                 <img
-                  src="/professional-headshot.png"
+                  src={elgunZaman.src}
                   alt="Photographer Portrait"
                   className="w-full h-full object-cover"
                 />
@@ -146,7 +164,7 @@ export function AboutSection() {
           </motion.div>
         </div>
 
-        {/* Skills Section */}
+        {/* Animated Counters Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -154,49 +172,28 @@ export function AboutSection() {
           viewport={{ once: true }}
           className="mt-20"
         >
-          <h3 className="font-serif text-2xl md:text-3xl font-light text-foreground mb-8 text-center">
-            {t.about.skillsTitle}
+          <h3 className="font-serif text-2xl md:text-3xl font-light text-white mb-8 text-center">
+            Fotoqrafiya Bacarıqları
           </h3>
+       
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {t.about.skills.map((item, index) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
-                <div className="relative w-20 h-20 mx-auto mb-4">
-                  <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 36 36">
-                    <path
-                      className="text-border"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      fill="none"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                    />
-                    <motion.path
-                      className="text-primary"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      fill="none"
-                      strokeLinecap="round"
-                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                      initial={{ strokeDasharray: "0 100" }}
-                      whileInView={{ strokeDasharray: `${item.level} 100` }}
-                      transition={{ duration: 1.5, delay: index * 0.2 }}
-                      viewport={{ once: true }}
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-sm font-medium text-primary">{item.level}%</span>
-                  </div>
-                </div>
-                <h4 className="font-sans text-sm font-medium text-foreground">{item.name}</h4>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <AnimatedCounter end={23823} suffix="+" className="block mb-2" />
+              <p className="text-white/80 text-sm md:text-base">Uğurlu Toy Şəkli</p>
+            </div>
+            <div className="text-center">
+              <AnimatedCounter end={15420} suffix="+" className="block mb-2" />
+              <p className="text-white/80 text-sm md:text-base">Portret Çəkilişi</p>
+            </div>
+            <div className="text-center">
+              <AnimatedCounter end={8920} suffix="+" className="block mb-2" />
+              <p className="text-white/80 text-sm md:text-base">Hadisə Fotoqrafiyası</p>
+            </div>
+            <div className="text-center">
+              <AnimatedCounter end={12500} suffix="+" className="block mb-2" />
+              <p className="text-white/80 text-sm md:text-base">Redaktə Edilmiş Şəkil</p>
+            </div>
           </div>
         </motion.div>
       </div>

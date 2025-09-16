@@ -1,188 +1,127 @@
 "use client"
 
 import { useLanguage } from "@/hooks/use-language"
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Quote, ChevronLeft, ChevronRight } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
+import { motion } from "framer-motion"
+import { Quote } from "lucide-react"
+import BlurText from "./BlurText"
+
+type Testimonial = {
+  name: string
+  role: string
+  text: string
+}
 
 export function TestimonialsSection() {
   const { t } = useLanguage()
-  const [currentTestimonial, setCurrentTestimonial] = useState(0)
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const testimonials = t.testimonials.clients as Testimonial[]
+  const extendedTestimonials = [...testimonials, ...testimonials]
 
-  const testimonials = t.testimonials.clients
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const [width, setWidth] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
 
-  // Auto-play functionality - change every 5 seconds
+  const x = useRef(0)
+  const rafId = useRef<number | undefined>(undefined)
+
+  const tick = () => {
+    if (!carouselRef.current) return
+    x.current -= 0.35
+    if (x.current <= -width / 2) x.current = 0
+    carouselRef.current.style.transform = `translateX(${x.current}px)`
+    if (!isHovered) rafId.current = requestAnimationFrame(tick)
+  }
+
   useEffect(() => {
-    if (!isAutoPlaying) return
+    if (carouselRef.current) {
+      setWidth(carouselRef.current.scrollWidth / 2)
+    }
+    rafId.current = requestAnimationFrame(tick)
+    return () => {
+      if (rafId.current) cancelAnimationFrame(rafId.current)
+    }
+  }, [width, isHovered])
 
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [testimonials.length, isAutoPlaying])
-
-  const nextTestimonial = () => {
-    setIsAutoPlaying(false)
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    // Resume auto-play after 10 seconds
-    setTimeout(() => setIsAutoPlaying(true), 10000)
-  }
-
-  const prevTestimonial = () => {
-    setIsAutoPlaying(false)
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-    // Resume auto-play after 10 seconds
-    setTimeout(() => setIsAutoPlaying(true), 10000)
-  }
-
-  const goToTestimonial = (index: number) => {
-    setIsAutoPlaying(false)
-    setCurrentTestimonial(index)
-    // Resume auto-play after 10 seconds
-    setTimeout(() => setIsAutoPlaying(true), 10000)
-  }
+  useEffect(() => {
+    if (!isHovered) {
+      rafId.current = requestAnimationFrame(tick)
+    } else if (rafId.current) {
+      cancelAnimationFrame(rafId.current)
+    }
+  }, [isHovered])
 
   return (
-    <section className="py-20 px-6 bg-secondary">
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
+    <section className="py-20 overflow-hidden">
+      {/* Section Header */}
+      <div className="text-center mb-16 px-6">
+        <BlurText
+          text={t.testimonials.title}
+          delay={150}
+          animateBy="words"
+          direction="top"
+          className="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-white mb-4"
+          animationFrom={{ filter: 'blur(12px)', opacity: 0, y: -60 }}
+          animationTo={[
+            { filter: 'blur(6px)', opacity: 0.6, y: -20 },
+            { filter: 'blur(0px)', opacity: 1, y: 0 }
+          ]}
+          stepDuration={0.3}
+        />
+        <BlurText
+          text={t.testimonials.subtitle}
+          delay={100}
+          animateBy="words"
+          direction="bottom"
+          className="font-sans text-lg text-white/70 max-w-2xl mx-auto"
+          animationFrom={{ filter: 'blur(10px)', opacity: 0, y: 40 }}
+          animationTo={[
+            { filter: 'blur(5px)', opacity: 0.5, y: 10 },
+            { filter: 'blur(0px)', opacity: 1, y: 0 }
+          ]}
+          stepDuration={0.25}
+        />
+      </div>
+
+      {/* Full Width Carousel */}
+      <div
+        className="relative w-full overflow-hidden py-8"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div
+          ref={carouselRef}
+          className="flex whitespace-nowrap will-change-transform"
+          style={{ transform: `translateX(${x.current}px)` }}
         >
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-foreground mb-4">
-            {t.testimonials.title}
-          </h2>
-          <p className="font-sans text-lg text-muted-foreground max-w-2xl mx-auto">{t.testimonials.subtitle}</p>
-        </motion.div>
-
-        {/* Testimonials Slideshow */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="relative max-w-4xl mx-auto"
-        >
-          <div className="relative bg-card rounded-2xl p-8 md:p-12 shadow-lg min-h-[300px] flex items-center">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentTestimonial}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.5 }}
-                className="w-full text-center"
-              >
-                {/* Quote Icon */}
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.3, delay: 0.2 }}
-                  className="flex justify-center mb-6"
-                >
-                  <Quote className="h-12 w-12 text-primary/30" />
-                </motion.div>
-
-                {/* Testimonial Text */}
-                <motion.blockquote
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3 }}
-                  className="font-sans text-xl md:text-2xl text-card-foreground leading-relaxed mb-8 italic"
-                >
-                  "{testimonials[currentTestimonial].text}"
-                </motion.blockquote>
-
-                {/* Client Info */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
-                  className="flex flex-col items-center"
-                >
-                  {/* Client Avatar */}
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                    <span className="text-primary font-serif text-xl font-medium">
-                      {testimonials[currentTestimonial].name.charAt(0)}
-                    </span>
-                  </div>
-
-                  {/* Client Name and Role */}
-                  <h4 className="font-serif text-xl font-medium text-card-foreground mb-1">
-                    {testimonials[currentTestimonial].name}
+          {extendedTestimonials.map((testimonial, index) => (
+            <motion.div
+              key={index}
+              className="inline-block px-4"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.06 * (index % testimonials.length) }}
+              viewport={{ once: true, amount: 0.2 }}
+              whileHover={{ scale: 1.05, zIndex: 10, boxShadow: "0 25px 60px rgba(0,0,0,0.35)" }}
+            >
+              <div className="relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 w-[320px] h-[320px] flex flex-col items-center justify-center text-center">
+                <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4">
+                  <span className="text-white font-serif text-xl font-medium">
+                    {testimonial.name.charAt(0)}
+                  </span>
+                </div>
+                <div className="text-center mb-4">
+                  <h4 className="font-serif text-lg font-medium text-white mb-2">
+                    {testimonial.name}
                   </h4>
-                  <p className="font-sans text-muted-foreground text-sm">{testimonials[currentTestimonial].role}</p>
-                </motion.div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Navigation Buttons */}
-            <button
-              onClick={prevTestimonial}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary p-2 rounded-full shadow-md transition-all duration-200 hover:scale-110"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              onClick={nextTestimonial}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary p-2 rounded-full shadow-md transition-all duration-200 hover:scale-110"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-          </div>
-
-          {/* Testimonial Indicators */}
-          <div className="flex justify-center mt-8 space-x-3">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToTestimonial(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentTestimonial ? "bg-primary scale-125" : "bg-primary/30 hover:bg-primary/50"
-                }`}
-                aria-label={`Go to testimonial ${index + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Auto-play Indicator
-          <div className="flex justify-center mt-4">
-            <div className="flex items-center space-x-2 text-muted-foreground text-sm">
-              <div className={`w-2 h-2 rounded-full ${isAutoPlaying ? "bg-green-500" : "bg-gray-400"}`} />
-              <span>{isAutoPlaying ? "Auto-playing" : "Paused"}</span>
-            </div>
-          </div> */}
-        </motion.div>
-
-        {/* Statistics or Additional Info */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16"
-        >
-          <div className="text-center">
-            <div className="font-serif text-3xl md:text-4xl font-light text-primary mb-2">500+</div>
-            <div className="font-sans text-muted-foreground">Happy Clients</div>
-          </div>
-          <div className="text-center">
-            <div className="font-serif text-3xl md:text-4xl font-light text-primary mb-2">1000+</div>
-            <div className="font-sans text-muted-foreground">Photos Taken</div>
-          </div>
-          <div className="text-center">
-            <div className="font-serif text-3xl md:text-4xl font-light text-primary mb-2">10+</div>
-            <div className="font-sans text-muted-foreground">Years Experience</div>
-          </div>
-        </motion.div>
+                  <p className="font-sans text-white/60 text-sm">{testimonial.role}</p>
+                </div>
+                <blockquote className="font-sans text-sm text-white/80 leading-relaxed italic line-clamp-4 whitespace-normal break-words text-center">
+                  "{testimonial.text}"
+                </blockquote>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   )

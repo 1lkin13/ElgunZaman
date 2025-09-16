@@ -35,19 +35,19 @@ export default function HomePage() {
         <HeroSection />
       </div>
 
-      <div id="gallery" className="section-transition" suppressHydrationWarning>
+      <div id="gallery" className="section-transition py-20" suppressHydrationWarning>
         <Gallery/>
       </div>
 
-      <div id="testimonials" className="section-transition" suppressHydrationWarning>
+      <div id="testimonials" className="section-transition py-20" suppressHydrationWarning>
         <TestimonialsSection />
       </div>
 
-      <div id="about" className="section-transition" suppressHydrationWarning>
+      <div id="about" className="section-transition py-20" suppressHydrationWarning>
         <AboutSection />
       </div>
 
-      <div id="contact" className="section-transition" suppressHydrationWarning>
+      <div id="contact" className="section-transition py-20" suppressHydrationWarning>
         <ContactSection />
       </div>
 

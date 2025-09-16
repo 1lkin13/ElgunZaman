@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Mail, Phone, MapPin, Instagram, Facebook, Camera, Send, CheckCircle, AlertCircle } from "lucide-react"
+import BlurText from "./BlurText"
 
 export function ContactSection() {
   const { t } = useLanguage()
@@ -95,21 +96,37 @@ export function ContactSection() {
   ]
 
   return (
-    <section className="py-20 px-6 bg-secondary">
+    <section className="py-20 px-6">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-foreground mb-4">
-            {t.contact.title}
-          </h2>
-          <p className="font-sans text-lg text-muted-foreground max-w-2xl mx-auto">{t.contact.subtitle}</p>
-        </motion.div>
+        <div className="text-center mb-16">
+          <BlurText
+            text={t.contact.title}
+            delay={150}
+            animateBy="words"
+            direction="top"
+            className="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-white mb-4"
+            animationFrom={{ filter: 'blur(12px)', opacity: 0, y: -60 }}
+            animationTo={[
+              { filter: 'blur(6px)', opacity: 0.6, y: -20 },
+              { filter: 'blur(0px)', opacity: 1, y: 0 }
+            ]}
+            stepDuration={0.3}
+          />
+          <BlurText
+            text={t.contact.subtitle}
+            delay={100}
+            animateBy="words"
+            direction="bottom"
+            className="font-sans text-lg text-white/70 max-w-2xl mx-auto"
+            animationFrom={{ filter: 'blur(10px)', opacity: 0, y: 40 }}
+            animationTo={[
+              { filter: 'blur(5px)', opacity: 0.5, y: 10 },
+              { filter: 'blur(0px)', opacity: 1, y: 0 }
+            ]}
+            stepDuration={0.25}
+          />
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-16">
           {/* Left Column - Contact Form */}

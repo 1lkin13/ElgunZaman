@@ -4,6 +4,7 @@ import { Manrope } from "next/font/google"
 import "./globals.css"
 import { LanguageProvider } from "@/hooks/use-language"
 import { NavigationSwitcher } from "@/components/navigation-switcher"
+import Particles from "@/components/Particles"
 
 const manrope = Manrope({
   subsets: ["latin", "latin-ext"],
@@ -13,9 +14,9 @@ const manrope = Manrope({
 })
 
 export const metadata: Metadata = {
-  title: "Photographer Portfolio",
+  title: "Elgun Zaman",
   description: "Professional photographer portfolio showcasing wedding, portrait and event photography",
-  generator: "v0.app",
+  generator: "Elgun Zaman",
 }
 
 export default function RootLayout({
@@ -24,8 +25,25 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="az" suppressHydrationWarning className={`${manrope.variable} antialiased`}>
+    <html lang="az" suppressHydrationWarning className={`${manrope.variable} antialiased dark`}>
       <body suppressHydrationWarning>
+        {/* Global Particles background - tüm sayfaya yayılan */}
+        <div className="fixed inset-0 -z-10 pointer-events-none">
+          <Particles
+            className="w-full h-full"
+            particleCount={300}
+            particleSpread={12}
+            speed={0.1}
+            particleColors={["#ffffff"]}
+            alphaParticles={true}
+            particleBaseSize={100}
+            sizeRandomness={1.2}
+            cameraDistance={25}
+            moveParticlesOnHover={false}
+            disableRotation={false}
+          />
+        </div>
+
         <LanguageProvider>
           <NavigationSwitcher />
           {children}

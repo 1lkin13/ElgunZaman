@@ -2,39 +2,42 @@ import React from 'react'
 import { GallerySection } from './gallery-section'
 import { useLanguage } from '@/hooks/use-language'
 import { motion } from 'framer-motion'
+import BlurText from './BlurText'
 
 function Gallery() {
   const { t } = useLanguage()
 
   return (
-    <div className="relative bg-[linear-gradient(135deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0)_40%,rgba(0,0,0,0)_100%)]">
+    <div className="relative">
       {/* GallerySection bileşeni, başlık ve altyazıyı zaten içeriyor */}
-      <div className="absolute inset-0 bg-[rgb(33,33,33)] pointer-events-none" style={{
-        backgroundImage: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 70%)`,
-      }} />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true }}
-          className="text-center mb-20"
-        >
-          <h2
-            className="font-serif text-4xl md:text-5xl lg:text-6xl font-extralight text-white/90 tracking-tight"
-            style={{ textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}
-          >
-            {t.gallery.title}
-          </h2>
-          <p
-            className="font-sans text-lg md:text-xl text-white/70 max-w-2xl mx-auto mt-4 leading-relaxed"
-            style={{ textShadow: "0 1px 2px rgba(0,0,0,0.4)" }}
-          >
-            {t.gallery.subtitle}
-          </p>
-        </motion.div>
+      {/* Section Header */}
+      <div className="text-center mb-16 px-4">
+        <BlurText
+          text={t.gallery.title}
+          delay={150}
+          animateBy="words"
+          direction="top"
+          className="font-serif text-4xl md:text-5xl lg:text-6xl font-light text-white mb-4"
+          animationFrom={{ filter: 'blur(12px)', opacity: 0, y: -60 }}
+          animationTo={[
+            { filter: 'blur(6px)', opacity: 0.6, y: -20 },
+            { filter: 'blur(0px)', opacity: 1, y: 0 }
+          ]}
+          stepDuration={0.3}
+        />
+        <BlurText
+          text={t.gallery.subtitle}
+          delay={100}
+          animateBy="words"
+          direction="bottom"
+          className="font-sans text-lg text-white/70 max-w-2xl mx-auto"
+          animationFrom={{ filter: 'blur(10px)', opacity: 0, y: 40 }}
+          animationTo={[
+            { filter: 'blur(5px)', opacity: 0.5, y: 10 },
+            { filter: 'blur(0px)', opacity: 1, y: 0 }
+          ]}
+          stepDuration={0.25}
+        />
       </div>
       <motion.div
         initial={{ opacity: 0 }}
