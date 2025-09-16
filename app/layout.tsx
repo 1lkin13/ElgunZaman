@@ -1,20 +1,15 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist } from "next/font/google"
 import { Manrope } from "next/font/google"
 import "./globals.css"
 import { LanguageProvider } from "@/hooks/use-language"
-
-const geist = Geist({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-geist",
-})
+import { NavigationSwitcher } from "@/components/navigation-switcher"
 
 const manrope = Manrope({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   display: "swap",
   variable: "--font-manrope",
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
 })
 
 export const metadata: Metadata = {
@@ -29,9 +24,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${geist.variable} ${manrope.variable} antialiased`}>
+    <html lang="az" suppressHydrationWarning className={`${manrope.variable} antialiased`}>
       <body suppressHydrationWarning>
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          <NavigationSwitcher />
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   )

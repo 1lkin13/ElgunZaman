@@ -39,7 +39,7 @@ export function AboutSection() {
             <div className="relative">
               <div className="aspect-[3/4] max-w-sm mx-auto lg:mx-0 rounded-2xl overflow-hidden bg-muted">
                 <img
-                  src="/photographer-portrait.png"
+                  src="/professional-headshot.png"
                   alt="Photographer Portrait"
                   className="w-full h-full object-cover"
                 />

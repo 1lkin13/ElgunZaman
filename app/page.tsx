@@ -1,35 +1,53 @@
-import { HeroSection } from "@/components/hero-section"
-import { Navigation } from "@/components/navigation"
-import { GallerySection } from "@/components/gallery-section"
-import { TestimonialsSection } from "@/components/testimonials-section"
-import { AboutSection } from "@/components/about-section"
-import { ContactSection } from "@/components/contact-section"
-import { ScrollProgress } from "@/components/scroll-progress"
-import { BackToTop } from "@/components/back-to-top"
+"use client"
+
+import Gallery from "@/components/Gallery"
+import dynamic from "next/dynamic"
+
+const HeroSection = dynamic(() => import("@/components/hero-section").then((mod) => mod.HeroSection), {
+  ssr: false,
+})
+const ScrollProgress = dynamic(() => import("@/components/scroll-progress").then((mod) => mod.ScrollProgress), {
+  ssr: false,
+})
+const BackToTop = dynamic(() => import("@/components/back-to-top").then((mod) => mod.BackToTop), {
+  ssr: false,
+})
+
+const GallerySection = dynamic(() => import("@/components/gallery-section").then((mod) => mod.GallerySection), {
+  ssr: false,
+})
+const TestimonialsSection = dynamic(() => import("@/components/testimonials-section").then((mod) => mod.TestimonialsSection), {
+  ssr: false,
+})
+const AboutSection = dynamic(() => import("@/components/about-section").then((mod) => mod.AboutSection), {
+  ssr: false,
+})
+const ContactSection = dynamic(() => import("@/components/contact-section").then((mod) => mod.ContactSection), {
+  ssr: false,
+})
 
 export default function HomePage() {
   return (
     <main className="min-h-screen smooth-scroll">
       <ScrollProgress />
-      <Navigation />
 
-      <div id="hero" className="section-transition">
+      <div id="hero" className="section-transition" suppressHydrationWarning>
         <HeroSection />
       </div>
 
-      <div id="gallery" className="section-transition">
-        <GallerySection />
+      <div id="gallery" className="section-transition" suppressHydrationWarning>
+        <Gallery/>
       </div>
 
-      <div id="testimonials" className="section-transition">
+      <div id="testimonials" className="section-transition" suppressHydrationWarning>
         <TestimonialsSection />
       </div>
 
-      <div id="about" className="section-transition">
+      <div id="about" className="section-transition" suppressHydrationWarning>
         <AboutSection />
       </div>
 
-      <div id="contact" className="section-transition">
+      <div id="contact" className="section-transition" suppressHydrationWarning>
         <ContactSection />
       </div>
 

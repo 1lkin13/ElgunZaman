@@ -4,107 +4,78 @@ import { useLanguage } from "@/hooks/use-language"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { ChevronDown, Globe } from "lucide-react"
+import { motion } from "framer-motion"
 
 type Props = {
   isScrolled?: boolean
 }
 
-const languageTheme = {
-  az: {
-    light: {
-      border: "border-emerald-300/50",
-      text: "text-emerald-200",
-      icon: "text-emerald-300",
-      hoverBorder: "hover:border-emerald-400",
-      hoverBg: "hover:bg-white/20",
-    },
-    dark: {
-      border: "border-blue-700/60",
-      text: "text-blue-800",
-      icon: "text-blue-700",
-      hoverBorder: "hover:border-blue-800",
-      hoverBg: "hover:bg-primary/10",
-    },
-  },
-  en: {
-    light: {
-      border: "border-blue-300/50",
-      text: "text-blue-200",
-      icon: "text-blue-300",
-      hoverBorder: "hover:border-blue-400",
-      hoverBg: "hover:bg-white/20",
-    },
-    dark: {
-      border: "border-blue-700/60",
-      text: "text-blue-800",
-      icon: "text-blue-700",
-      hoverBorder: "hover:border-blue-800",
-      hoverBg: "hover:bg-primary/10",
-    },
-  },
-  ru: {
-    light: {
-      border: "border-rose-300/50",
-      text: "text-rose-200",
-      icon: "text-rose-300",
-      hoverBorder: "hover:border-rose-400",
-      hoverBg: "hover:bg-white/20",
-    },
-    dark: {
-      border: "border-rose-700/60",
-      text: "text-rose-800",
-      icon: "text-rose-700",
-      hoverBorder: "hover:border-rose-800",
-      hoverBg: "hover:bg-primary/10",
-    },
-  },
-} as const
+// motion yetenekleriyle genişletilmiş bir Button bileşeni oluştur
+const MotionButton = motion(Button)
+const MotionDropdownMenuItem = motion(DropdownMenuItem)
 
 export function LanguageSwitcher({ isScrolled = false }: Props) {
   const { currentLanguage, setLanguage, availableLanguages } = useLanguage()
-  const tones = languageTheme[currentLanguage][isScrolled ? "dark" : "light"]
+
+  const labels: Record<string, string> = { az: "Az", en: "Eng", ru: "Rus" }
+
+  const tones = isScrolled
+    ? { // Scroll durumunda daha koyu yeşil tonlar
+        border: "border-emerald-500/40",
+        text: "text-emerald-700",
+        icon: "text-emerald-600",
+        hoverBorder: "hover:border-emerald-600",
+        hoverBg: "hover:bg-emerald-50",
+      }
+    : { // Normal durumda daha açık yeşil tonlar
+        border: "border-emerald-300/60",
+        text: "text-emerald-200",
+        icon: "text-emerald-300",
+        hoverBorder: "hover:border-emerald-400",
+        hoverBg: "hover:bg-white/10",
+      }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className={`gap-2 backdrop-blur-md border-2 transition-all duration-300 rounded-full shadow-lg ${
-            isScrolled ? "bg-transparent" : "bg-white/10"
-          } ${tones.border} ${tones.hoverBorder} ${tones.hoverBg}`}
-        >
-          <Globe className={`h-4 w-4 ${tones.icon}`} />
-          <span className={`${tones.text} font-medium`}>{availableLanguages[currentLanguage]}</span>
-          <ChevronDown className={`h-4 w-4 ${tones.icon}`} />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className={`bg-white/95 backdrop-blur-sm border shadow-xl ${
-          currentLanguage === "az"
-            ? "border-emerald-200/50"
-            : currentLanguage === "ru"
-              ? "border-rose-200/50"
-              : "border-blue-200/50"
-        }`}
-      >
-        {Object.entries(availableLanguages).map(([code, name]) => (
-          <DropdownMenuItem
-            key={code}
-            onClick={() => setLanguage(code as "az" | "en" | "ru")}
-            className={`cursor-pointer text-gray-800 ${
-              code === "az"
-                ? "hover:bg-emerald-50"
-                : code === "ru"
-                  ? "hover:bg-rose-50"
-                  : "hover:bg-blue-50"
-            } ${currentLanguage === code ? "font-semibold" : ""}`}
+    <div data-language-dropdown="true">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <MotionButton
+            data-language-dropdown
+            variant="outline"
+            size="sm"
+            className={`gap-1 h-7 px-2 backdrop-blur-md border border-white/20 transition-all duration-300 rounded-full shadow-lg text-xs ${
+              isScrolled ? "bg-white/60" : "bg-white/10"
+            } ${tones.border} ${tones.hoverBorder} ${tones.hoverBg}`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {name}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+            <Globe className={`h-4 w-4 ${tones.icon}`} />
+            <span className={`${tones.text} font-medium`}>{labels[currentLanguage]}</span>
+            <ChevronDown className={`h-4 w-4 ${tones.icon}`} />
+          </MotionButton>
+        </DropdownMenuTrigger>
+        {/* DropdownMenu.Portal kaldırıldı çünkü DropdownMenuContent kendi içinde portalı yönetiyor */}
+        <DropdownMenuContent
+          data-language-dropdown
+          align="end"
+          style={{ zIndex: 150 }}
+          sideOffset={8} // Açılır menü içeriğinin tetikleyiciye olan uzaklığını ayarlar
+          className={`bg-white/95 backdrop-blur-sm  border shadow-xl border-emerald-200/60 w-max`} // p-1 kaldırıldı
+        >
+          {(Object.keys(availableLanguages) as Array<keyof typeof availableLanguages>).map((code) => (
+            <MotionDropdownMenuItem
+              key={code}
+              data-language-dropdown
+              onClick={() => setLanguage(code as "az" | "en" | "ru")}
+              className={`cursor-pointer text-gray-800 hover:bg-emerald-50 ${currentLanguage === code ? "font-semibold" : ""}`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="text-sm">{availableLanguages[code]}</span>
+            </MotionDropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   )
 }
