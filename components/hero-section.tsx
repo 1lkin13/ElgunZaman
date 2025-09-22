@@ -3,7 +3,7 @@
 import { useLanguage } from "@/hooks/use-language"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { ArrowDown, Camera, Heart, Star, Users } from "lucide-react"
+import { ArrowDown, Scissors, Star, Heart, Users } from "lucide-react"
 import BlurText from "./BlurText"
 
 export function HeroSection() {
@@ -139,7 +139,7 @@ export function HeroSection() {
             transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
             className="w-16 h-16 border mb-20 border-white/20 rounded-full flex items-center justify-center"
           >
-            <Camera className="w-6 h-6 text-white/40" />
+            <Scissors className="w-6 h-6 text-white/40" />
           </motion.div>
         </motion.div>
 
@@ -157,6 +157,23 @@ export function HeroSection() {
           >
             <Heart className="w-5 h-5  text-white/40" />
           </motion.div>
+        </motion.div>
+
+        {/* Extra Floating Star - yazının üzerine gelmesin, sağ üstte */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 1.9 }}
+          className="absolute top-24 right-8"
+        >
+          {/* <motion.div
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+            className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center"
+          >
+            <Star className="w-4 h-4 text-white/40" />
+          </motion.div> */}
         </motion.div>
       </div>
 

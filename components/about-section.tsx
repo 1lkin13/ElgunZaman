@@ -3,7 +3,7 @@
 import { useLanguage } from "@/hooks/use-language"
 import { motion } from "framer-motion"
 import { Camera, Award, Users, Calendar } from "lucide-react"
-import elgunZaman from "@/public/elgun.jpg"
+import elgunZaman from "@/public/barbar.png"
 import { AnimatedCounter } from "./animated-counter"
 import BlurText from "./BlurText"
 const timelineIcons = [Camera, Users, Award, Award, Calendar, Award]
@@ -173,26 +173,25 @@ export function AboutSection() {
           className="mt-20"
         >
           <h3 className="font-serif text-2xl md:text-3xl font-light text-white mb-8 text-center">
-            Fotoqrafiya Bacarıqları
+            Ustalıq Metrikləri
           </h3>
-       
-
+          
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <AnimatedCounter end={23823} suffix="+" className="block mb-2" />
-              <p className="text-white/80 text-sm md:text-base">Uğurlu Toy Şəkli</p>
+              <AnimatedCounter end={3200} suffix="+" className="block mb-2" />
+              <p className="text-white/80 text-sm md:text-base">Məmnun Müştəri</p>
             </div>
             <div className="text-center">
-              <AnimatedCounter end={15420} suffix="+" className="block mb-2" />
-              <p className="text-white/80 text-sm md:text-base">Portret Çəkilişi</p>
+              <AnimatedCounter end={8700} suffix="+" className="block mb-2" />
+              <p className="text-white/80 text-sm md:text-base">Edilən Kəsim</p>
             </div>
             <div className="text-center">
-              <AnimatedCounter end={8920} suffix="+" className="block mb-2" />
-              <p className="text-white/80 text-sm md:text-base">Hadisə Fotoqrafiyası</p>
+              <AnimatedCounter end={5400} suffix="+" className="block mb-2" />
+              <p className="text-white/80 text-sm md:text-base">Saqqal Forması</p>
             </div>
             <div className="text-center">
-              <AnimatedCounter end={12500} suffix="+" className="block mb-2" />
-              <p className="text-white/80 text-sm md:text-base">Redaktə Edilmiş Şəkil</p>
+              <AnimatedCounter end={6100} suffix="+" className="block mb-2" />
+              <p className="text-white/80 text-sm md:text-base">Styling və Finiş</p>
             </div>
           </div>
         </motion.div>

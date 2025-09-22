@@ -14,7 +14,7 @@ const manrope = Manrope({
 })
 
 export const metadata: Metadata = {
-  title: "Elgun Zaman",
+  title: "Pünhan Sabiroğlu",
   description: "Professional photographer portfolio showcasing wedding, portrait and event photography",
   generator: "Elgun Zaman",
 }
@@ -28,7 +28,7 @@ export default function RootLayout({
     <html lang="az" suppressHydrationWarning className={`${manrope.variable} antialiased dark`}>
       <body suppressHydrationWarning>
         {/* Global Particles background - tüm sayfaya yayılan */}
-        <div className="fixed inset-0 -z-10 pointer-events-none">
+        <div className="fixed inset-0 -z-10 pointer-events-none" suppressHydrationWarning>
           <Particles
             className="w-full h-full"
             particleCount={300}

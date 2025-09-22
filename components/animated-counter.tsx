@@ -77,3 +77,4 @@ export function AnimatedCounter({ end, duration = 2, suffix = "", className = ""
     </motion.div>
   )
 }
+

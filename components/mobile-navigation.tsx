@@ -17,6 +17,7 @@ export function MobileNavigation() {
     { id: "gallery", label: t.nav.gallery },
     { id: "testimonials", label: t.nav.testimonials },
     { id: "about", label: t.nav.about },
+    { id: "pricing", label: t.nav.pricing },
     { id: "contact", label: t.nav.contact },
   ]
 
@@ -37,7 +38,7 @@ export function MobileNavigation() {
       const scrollPosition = window.scrollY
       setIsScrolled(scrollPosition > 50)
 
-      const sections = ["hero", "gallery", "testimonials", "about", "contact"]
+      const sections = ["hero", "gallery", "testimonials", "about", "pricing", "contact"]
       const windowHeight = window.innerHeight
       const scrollWithOffset = scrollPosition + windowHeight / 3
 
@@ -155,4 +156,5 @@ export function MobileNavigation() {
     </>
   )
 }
+
 

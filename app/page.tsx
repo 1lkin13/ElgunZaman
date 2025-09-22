@@ -25,6 +25,9 @@ const AboutSection = dynamic(() => import("@/components/about-section").then((mo
 const ContactSection = dynamic(() => import("@/components/contact-section").then((mod) => mod.ContactSection), {
   ssr: false,
 })
+const PricingSection = dynamic(() => import("@/components/pricing-section").then((mod) => mod.PricingSection), {
+  ssr: false,
+})
 
 export default function HomePage() {
   return (
@@ -45,6 +48,10 @@ export default function HomePage() {
 
       <div id="about" className="section-transition py-20" suppressHydrationWarning>
         <AboutSection />
+      </div>
+
+      <div id="pricing" className="section-transition py-20" suppressHydrationWarning>
+        <PricingSection />
       </div>
 
       <div id="contact" className="section-transition py-20" suppressHydrationWarning>

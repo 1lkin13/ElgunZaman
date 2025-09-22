@@ -57,8 +57,8 @@ export function ContactSection() {
     {
       icon: Phone,
       label: t.contact.info.phone,
-      value: "+994 50 123 45 67",
-      href: "tel:+994501234567",
+      value: "+994 50 750 16 80",
+      href: "tel:+994507501680",
     },
     {
       icon: Mail,
@@ -295,16 +295,14 @@ export function ContactSection() {
               viewport={{ once: true }}
               className="bg-primary/5 p-6 rounded-xl border border-primary/20"
             >
-              <h4 className="font-serif text-xl font-medium text-foreground mb-2">Ready to Capture Memories?</h4>
-              <p className="text-muted-foreground mb-4">
-                Let's discuss your photography needs and create something beautiful together.
-              </p>
+              <h4 className="font-serif text-xl font-medium text-foreground mb-2">{t.contact.title}</h4>
+              <p className="text-muted-foreground mb-4">{t.contact.subtitle}</p>
               <Button
                 variant="outline"
                 className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
                 onClick={() => document.getElementById("name")?.focus()}
               >
-                Start a Conversation
+                {t.contact.cta}
               </Button>
             </motion.div>
           </motion.div>
